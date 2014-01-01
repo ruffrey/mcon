@@ -1,7 +1,8 @@
 (function() {
   var HEADER, UI, ansiparse, app, async, ejs,
   express, forever, foreverUI, fs, _, pkg, spawn,
-  passport, LocalStrategy, utils, log;
+  passport, LocalStrategy, GoogleStrategy, utils, log, users,
+  config;
   express = require('express');
   async = require('async');
   fs = require('fs');
@@ -15,6 +16,10 @@
   spawn = require('child_process').spawn;
   passport = require('passport');
   LocalStrategy = require('passport-local').Strategy;
+  GoogleStrategy = require('passport-google').Strategy;
+  config = require('./config.js');
+
+  users = require('./users.json');
 
   process.on("uncaughtException", function(err) {
     return console.log("Caught exception: " + err);
@@ -106,10 +111,10 @@
     'Content-Type': 'text/javascript'
   };
 
-  var users = [
-      { id: 1, username: 'joe', password: 'secret', email: 'joe@console.com' },
-      { id: 2, username: 'bob', password: 'birthday', email: 'bob@console.com' }
-  ];
+  // var users = [
+  //     { id: 1, username: 'joe', password: 'secret', email: 'joe@console.com' },
+  //     { id: 2, username: 'bob', password: 'birthday', email: 'bob@console.com' }
+  // ];
 
   function findById(id, fn) {
     var idx = id - 1;
@@ -140,13 +145,27 @@
     });
   });
 
-  passport.use(new LocalStrategy(
-    function(username, password, done) {
+  // passport.use(new LocalStrategy(
+  //   function(username, password, done) {
+  //     process.nextTick(function () {
+  //       findByUsername(username, function(err, user) {
+  //         if (err) { return done(err); }
+  //         if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
+  //         if (user.password != password) { return done(null, false, { message: 'Invalid password' }); }
+  //         return done(null, user);
+  //       })
+  //     });
+  //   }
+  // ));
+
+  passport.use(new GoogleStrategy(config.google,
+    function(openId, profile, done) {
       process.nextTick(function () {
-        findByUsername(username, function(err, user) {
+
+        findByUsername(profile.emails[0].value, function(err, user) {
           if (err) { return done(err); }
           if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
-          if (user.password != password) { return done(null, false, { message: 'Invalid password' }); }
+          
           return done(null, user);
         })
       });
@@ -279,9 +298,24 @@
     return res.redirect('/console');
   });
 
-  app.post('/login', passport.authenticate('local', {
-        successRedirect: '/console',
-        failureRedirect: '/' }));
+  // app.post('/login', passport.authenticate('local', {
+  //       successRedirect: '/console',
+  //       failureRedirect: '/' }));
+
+
+
+  // Redirect the user to Google for authentication.  When complete, Google
+  // will redirect the user back to the application at
+  //     /auth/google/return
+  app.get('/login', passport.authenticate('google') );
+
+  // Google will redirect the user to this URL after authentication.  Finish
+  // the process by verifying the assertion.  If valid, the user will be
+  // logged in.  Otherwise, authentication has failed.
+  app.get('/login/return', 
+    passport.authenticate('google', { successRedirect: '/console', failureRedirect: '/' } ) 
+  );
+
 
   app.get('/logout', function(req, res){
     req.logout();

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cd /root
+mkdir /root/processes
 
 # install deps
 	echo "$(date) - Installing M-Con dependencies"

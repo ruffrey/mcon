@@ -8,7 +8,8 @@ cd /root
 		apt-get install build-dep make libc-dev gcc g++ build-essential curl nginx python
 
 		curl https://raw.github.com/creationix/nvm/master/install.sh | sh
-		source ~/.profile
+		. ./.profile
+		. ./.bashrc
 		nvm ls-remote
 		nvm install 0.10.13
 		

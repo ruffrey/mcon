@@ -29,9 +29,13 @@ Start NodeJS processes with forever cli and manage them via a web interface.
 This will install the app in `/root/`. It is recommended to keep configurations for app directories in `config.js` the same, which will all later apps in `/root/`. If you don't like it, write your own - sorry.
 
 ``` bash
-    # as root!!
+    
+    # Make sure you are logged in as root!!
     apt-get update
     apt-get install git curl
+
+    # Installing node
+
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 	. ./.profile
 	nvm install 0.10

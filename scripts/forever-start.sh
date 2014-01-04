@@ -9,7 +9,8 @@ then
 
     echo "$(date) Forever not running, will try to start the app."
 
-    /usr/local/bin/node /usr/local/bin/forever start /root/mcon/app.js
+    nvm use 0.10
+    node /usr/local/bin/forever start /root/mcon/app.js
 
     cd /root/processes
     list=`ls *.sh`

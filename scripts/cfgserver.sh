@@ -2,9 +2,6 @@
 
 cd /root
 
-# Put node where it goes
-n=$(which node);n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
-
 # install deps
 	echo "$(date) - Installing M-Con dependencies"
 		#apt-get update

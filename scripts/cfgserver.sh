@@ -1,13 +1,11 @@
 #!/bin/sh
 
 cd /root
-. ./.profile
 
 # install deps
 	echo "$(date) - Installing M-Con dependencies"
 		apt-get update
 		#apt-get install build-dep make libc-dev gcc g++ build-essential curl nginx python
-		nvm install 0.10
 		
 	echo "$(date) - Installing Forever"
 		npm install forever -g

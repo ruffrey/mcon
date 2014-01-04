@@ -33,6 +33,8 @@ This will install the app in `/root/`. It is recommended to keep configurations 
     apt-get update
     apt-get install git curl
     curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+	. ./.profile
+	nvm install 0.10
     git clone https://github.com/ruffrey/mcon.git
 ```
 

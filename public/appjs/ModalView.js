@@ -43,6 +43,11 @@ App.ModalView = Backbone.View.extend({
 
         'name': $('#process-args-name').val(),
         'repo': $('#process-args-repo').val(),
+        'port': $('#process-args-port').val(),
+
+        'domain': $('#process-args-domain').val(),
+        'subdomain': $('#process-args-subdomain').val(),
+
         'vars': $('#process-args-vars').val()
       };
       console.log(reqData);

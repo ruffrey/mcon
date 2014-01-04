@@ -19,15 +19,14 @@ With support for:
 - Creating a cron task to reboot all Forever processes if the server reboots.
 - Running multiple Node.js apps behind Nginx.
 
-![Login Page](http://f.cl.ly/items/0g2f2u2C3M1W2Q1J2s2i/LoginScreen.png)
-
-![Forever Console](http://f.cl.ly/items/2d3F121B261d0H1z0t1N/ForeverConsole.png)
 
 ## Usage
 
 Start NodeJS processes with forever cli and manage them via a web interface.
 
 ## Installation on a VPS server
+
+This will install the app in `/root/`. It is recommended to keep configurations for app directories in `config.js` the same, which will all later apps in `/root/`. If you don't like it, write your own - sorry.
 
 ``` bash
     # as root!!
@@ -38,12 +37,24 @@ At this point you may want to edit the `config.js` file and set your configurati
 
 Then edit `users.json` and add google accounts that should be allowed to authenticate.
 
+#### Keeping MongoDB alive
+
+There's a line in `scripts/start.sh`
+
 ``` bash
     cd mcon
     npm install
     cd scripts
     sh cfgserver.sh
 ```
+
+The server will configure itself and reboot. When it comes back up, the web UI will be available at the domain you set.
+
+
+## Troubleshooting
+
+Check `cron.log` which will be created in the `config.js` `{appdir: "/somewhere/" }` that you set.
+
 
 ## Security and Authentication
 
@@ -56,4 +67,5 @@ Forked from [Forever Web UI by Francois-Guillaume Ribreau](https://github.com/FG
 
 
 ## License
+
 MIT

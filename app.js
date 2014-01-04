@@ -231,6 +231,7 @@ return UI.stop(req.params.uid, function(err, results) {
 });
 });
 
+
 app.get('/info/:uid', function(req, res) {
 	return UI.info(req.params.uid, function(err, results) {
 	  if (err) {
@@ -246,6 +247,7 @@ app.get('/info/:uid', function(req, res) {
 	  }
 	});
 });
+
 
 app.post('/addProcess', function(req, res) {
 
@@ -290,7 +292,7 @@ app.post('/addProcess', function(req, res) {
 
 	function nextSteps() {
 
-		// first start the process, then write the file.
+		// first start the process, then write the sh startup file.
 		return UI.start(
 			encodeURIComponent(
 				req.body.vars + ' ' + config.appdir +' ' + req.body.name + '/' + req.body.args
@@ -324,10 +326,8 @@ app.post('/addProcess', function(req, res) {
 					}), HEADER, 500);
 				  }
 
-				  res.send(JSON.stringify({
-					status: 'success',
-					details: results
-				  }), HEADER, 200);
+				  ConfigureNginx();
+
 				}
 			  );
 
@@ -335,25 +335,75 @@ app.post('/addProcess', function(req, res) {
 		);
 	}
 
+	function ConfigureNginx() {
+		// create the nginx config file for this primary domain if it does not exist
+		
+		var confFilePath = '/etc/nginx/conf.d/' + req.body.domain + '.conf';
+		var nginxTemplate = fs.readFileSync(__dirname+"/scripts/nginx-template.sh");
+
+		nginxTemplate = nginxTemplate
+						.replace('{{DOMAIN}}', req.body.subdomain)
+						.replace('{{PORT}}', req.body.port);
+
+		if(!fs.existsSync(confFilePath))
+		{
+			fs.writeFileSync(confFilePath, '#!/bin/sh\n\n');
+		}
+		
+		fs.appendFileSync(confFilePath, nginxTemplate);
+
+		// restart nginx
+		var exec = require('child_process').exec,
+	  		child;
+
+		child = exec('service nginx restart',
+			function (error, stdout, stderr) {
+
+			  	if (error !== null) 
+			  	{   
+			  		console.log('exec error: ' + error);   
+			  		return res.json({
+			  			status: 'error',
+						details: error
+			  		}, HEADER, 500); 
+				} 
+				 
+				res.send(JSON.stringify({
+					status: 'success',
+					details: results
+				}), HEADER, 200);
+
+			}
+		);
+
+	}
+
 });
+
+
+// app.post('/updateProcess', function(req, res) {
+
+
+
+// });
 
 app.get('/ssh', function(req, res) {
-fs.readFile('/Users/jpx/.ssh/id_rsa.pub', 'utf8', function(err, fileText) {
-  if(err) 
-  {
-	return res.send(JSON.stringify({
-	  status: 'error',
-	  details: err
-	}), HEADER, 500);
-  }
-  
-  res.send(JSON.stringify({
-	status: 'success',
-	details: fileText
-  }), HEADER, 200);
+	fs.readFile('/Users/jpx/.ssh/id_rsa.pub', 'utf8', function(err, fileText) {
+		if(err) 
+	  	{
+			return res.send(JSON.stringify({
+		  		status: 'error',
+		  		details: err
+			}), HEADER, 500);
+	  	}
+	  
+	  	res.send(JSON.stringify({
+			status: 'success',
+			details: fileText
+	  	}), HEADER, 200);
+	});
+});
 
-});
-});
 
 app.post('/ssh', function(req, res) {
 	var exec = require('child_process').exec,
@@ -377,11 +427,11 @@ app.post('/ssh', function(req, res) {
 
 
 
-
 app.listen(config.port);
 
 this.log.info(config.appname, "boot complete.");
 this.log.info(config.appname, "listening on port", config.port);
+
 
 
 

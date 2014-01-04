@@ -3,11 +3,8 @@
 # install deps
 	echo "$(date) - Installing M-Con dependencies"
 		apt-get update
-		apt-get install build-essential
-		apt-get install make 
-		apt-get install curl 
-		apt-get install nginx 
-		apt-get install python 
+		apt-get install build-dep make libc-dev g++ build-essential curl nginx python
+
 		echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashrc
 		. ~/.bashrc
 		mkdir ~/local

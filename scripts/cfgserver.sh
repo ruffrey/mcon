@@ -2,7 +2,21 @@
 
 # install deps
 	echo "$(date) - Installing M-Con dependencies"
-		apt-get install curl nginx python-software-properties g++-4.6 g++ python make nodejs-dev nodejs npm
+		apt-get update
+		apt-get install build-essential
+		apt-get install make 
+		apt-get install curl 
+		apt-get install nginx 
+		apt-get install python 
+		echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashrc
+		. ~/.bashrc
+		mkdir ~/local
+		mkdir ~/node-latest-install
+		cd ~/node-latest-install
+		curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
+		./configure --prefix=~/local
+		make install
+		curl https://npmjs.org/install.sh | sh
 		
 	echo "$(date) - Installing Forever"
 		npm install forever -g

@@ -45,7 +45,7 @@ function ConfigureNginx(domain, subdomain, port, callback) {
 	// create the nginx config file for this primary domain if it does not exist
 	
 	var confFilePath = NginxConfPath(domain);
-	var nginxTemplate = fs.readFileSync(__dirname+"/scripts/nginx-template.sh");
+	var nginxTemplate = fs.readFileSync(__dirname+"/scripts/nginx-template.sh", {encoding: 'utf8'});
 
 	nginxTemplate = nginxTemplate
 					.replace('{{DOMAIN}}', 

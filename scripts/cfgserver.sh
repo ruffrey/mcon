@@ -18,16 +18,8 @@ echo "$(date) - Creating cron job"
 # finish message
 echo "$(date) - Server has finished configuring."
 
-# boot app
-echo "$(date) - Rebooting in 5"
-	sleep 1
-echo "$(date) - Rebooting in 4"
-	sleep 1
-echo "$(date) - Rebooting in 3"
-	sleep 1
-echo "$(date) - Rebooting in 2"
-	sleep 1
-echo "$(date) - Rebooting in 1"
-	sleep 1
+# reboot server
+echo "$(date) - Rebooting"
+	sleep 3
 
 reboot

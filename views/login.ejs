@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
-        <title>Flogg Console</title>
+        <title><%= config.appname %></title>
         <link rel="stylesheet" href="/dist/login.min.css" type="text/css" media="screen">
     </head>
     
@@ -19,7 +19,7 @@
                         <div class="front-card">
                             <div class="front-welcome">
                                 <div class="front-welcome-text" style="width:300px;margin-top:-5%;margin-left:50%;padding-left:40px;">
-                                    <h1>Flogg Console</h1>
+                                    <h1><%= config.appname %></h1>
                                     <p style="font-size:16px;">
                                         <br />
                                         <br />
@@ -28,7 +28,8 @@
                                     </p>
                                 </div>
                             </div>
-                            <!-- <div class="front-signin js-front-signin" style="margin-top: 4%;margin-left:-70%">
+                            <!-- Normal username and password
+                            <div class="front-signin js-front-signin" style="margin-top: 4%;margin-left:-70%">
                                 <form action="/login" class="signin" method="post">
                                     <div class="placeholding-input username">
                                         <input type="text" id="signin-email" class="text-input email-input" name="username" title="Username or email" autocomplete="on" tabindex="1">
@@ -56,10 +57,11 @@
                                         </label>
                                     </div>
                                 </form>
-                            </div> -->
+                            </div> 
+                            -->
                         </div>
                         <div class="footer inline-list" style="bottom:95%;left:55%">
-                            <!-- <ul><li><a href="//sylog.net">Symbolic Logic</a></li></ul> -->
+                            <ul><li><a href="//sylog.net">Symbolic Logic</a></li></ul>
                         </div>
                     </div>
                 </div>

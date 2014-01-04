@@ -40,8 +40,10 @@ App.ModalView = Backbone.View.extend({
       var reqData = {
         'args': encodeURIComponent($('#process-args-input').val()),
         'path': $('#process-args-input').val(),
+
         'name': $('#process-args-name').val(),
-        'repo': $('#process-args-repo').val()
+        'repo': $('#process-args-repo').val(),
+        'vars': $('#process-args-vars').val()
       };
       console.log(reqData);
 
@@ -52,6 +54,10 @@ App.ModalView = Backbone.View.extend({
       });
       
       request.success(function (response, textStatus, jqXHR){
+          if(response.success && response.success == "error")
+          {
+            
+          }
           var timingForRefresh = setTimeout(function() {
               $('.refresh').trigger('click');
               clearTimeout(timingForRefresh);

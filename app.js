@@ -37,6 +37,59 @@ process.on("uncaughtException", function(err) {
 console.log('\nStarting ', config.appname);
 
 
+function NginxConfPath(dmn) {
+	return '/etc/nginx/conf.d/' + dmn + '.conf';
+}
+
+function ConfigureNginx(domain, subdomain, port, callback) {
+	// create the nginx config file for this primary domain if it does not exist
+	
+	var confFilePath = NginxConfPath(domain);
+	var nginxTemplate = fs.readFileSync(__dirname+"/scripts/nginx-template.sh");
+
+	nginxTemplate = nginxTemplate
+					.replace('{{DOMAIN}}', 
+						subdomain ? subdomain + "." + domain : domain
+					)
+					.replace('{{PORT}}', port);
+
+	if(!fs.existsSync(confFilePath))
+	{
+		fs.writeFileSync(confFilePath, '#!/bin/sh\n\n');
+	}
+	
+	fs.appendFileSync(confFilePath, nginxTemplate);
+
+	// restart nginx
+	var exec = require('child_process').exec,
+  		child;
+
+	child = exec('service nginx restart', function (err, stdout, stderr) {
+
+	  	if (err) console.log('exec error: ' + err);   
+		
+		callback(err);
+
+	});
+
+}
+// configuring nginx for this process if it isnt already there
+if(process.env.NODE_ENV=="prod" && !fs.existsSync(NginxConfPath(config.domain)) )
+{
+	ConfigureNginx(config.domain, "", config.port, function(err) {
+		if(err)
+		{
+			console.log('Error configuring Nginx for', config.appname, err);
+		}
+		else{
+			console.log('Configured Nginx for', config.appname);
+		}
+	});
+}
+else{
+	console.log('Nginx already configured.');
+}
+
 // making sure all necessary directories are made
 [
 	config.appdir, 
@@ -326,7 +379,23 @@ app.post('/addProcess', function(req, res) {
 					}), HEADER, 500);
 				  }
 
-				  ConfigureNginx();
+				  ConfigureNginx(req.body.domain, req.body.subdomain, req.body.port, function(err) {
+				  	
+				  	if(err)
+				  	{
+				  		return res.json({
+				  			status: 'error',
+							details: err
+				  		}, HEADER, 500); 
+				  	}
+					  	
+
+			  		res.send(JSON.stringify({
+						status: 'success',
+						details: results
+					}), HEADER, 200);
+
+				  });
 
 				}
 			  );
@@ -335,48 +404,6 @@ app.post('/addProcess', function(req, res) {
 		);
 	}
 
-	function ConfigureNginx() {
-		// create the nginx config file for this primary domain if it does not exist
-		
-		var confFilePath = '/etc/nginx/conf.d/' + req.body.domain + '.conf';
-		var nginxTemplate = fs.readFileSync(__dirname+"/scripts/nginx-template.sh");
-
-		nginxTemplate = nginxTemplate
-						.replace('{{DOMAIN}}', req.body.subdomain)
-						.replace('{{PORT}}', req.body.port);
-
-		if(!fs.existsSync(confFilePath))
-		{
-			fs.writeFileSync(confFilePath, '#!/bin/sh\n\n');
-		}
-		
-		fs.appendFileSync(confFilePath, nginxTemplate);
-
-		// restart nginx
-		var exec = require('child_process').exec,
-	  		child;
-
-		child = exec('service nginx restart',
-			function (error, stdout, stderr) {
-
-			  	if (error !== null) 
-			  	{   
-			  		console.log('exec error: ' + error);   
-			  		return res.json({
-			  			status: 'error',
-						details: error
-			  		}, HEADER, 500); 
-				} 
-				 
-				res.send(JSON.stringify({
-					status: 'success',
-					details: results
-				}), HEADER, 200);
-
-			}
-		);
-
-	}
 
 });
 

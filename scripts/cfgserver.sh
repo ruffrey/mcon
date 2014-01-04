@@ -1,5 +1,6 @@
 #!/bin/sh
 
+cd /root/mcon && npm install
 cd /root
 mkdir /root/processes
 

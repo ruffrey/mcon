@@ -5,12 +5,13 @@
 var HEADER, UI, ansiparse, app, async, ejs,
 express, forever, foreverUI, fs, _, pkg, spawn,
 passport, LocalStrategy, GoogleStrategy, utils, log, users,
-config, path, BindAuthRoutes;
+config, path, BindAuthRoutes, url;
 
 express = require('express');
 async = require('async');
 fs = require('fs');
 path = require('path');
+url = require('url');
 forever = require('forever');
 _ = require('underscore');
 ansiparse = require('ansiparse');
@@ -76,7 +77,21 @@ function ConfigureNginx(domain, subdomain, port, callback) {
 // configuring nginx for this process if it isnt already there
 if(process.env.NODE_ENV=="prod" && !fs.existsSync(NginxConfPath(config.domain)) )
 {
-	ConfigureNginx(config.domain, "", config.port, function(err) {
+	var fullDomain = url.parse(config.domain).hostname;
+
+	var _domain = "", _subdomain = "", splitDomain = config.domain.split('.');
+
+	if(splitDomain.length > 2 )
+	{
+		_domain = splitDomain[ splitDomain.length - 2 ] + '.' + splitDomain[ splitDomain.length - 1 ];
+		splitDomain.slice( splitDomain.length - 2, 2);
+		_subdomain = splitDomain.join(".");
+	}
+	else{
+		_domain = config.domain;
+	}
+
+	ConfigureNginx(_domain, _subdomain, config.port, function(err) {
 		if(err)
 		{
 			console.log('Error configuring Nginx for', config.appname, err);

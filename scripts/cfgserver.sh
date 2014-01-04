@@ -28,9 +28,4 @@ echo "$(date) - Creating cron job"
 
 # finish message
 echo "$(date) - Server has finished configuring."
-
-# reboot server
-echo "$(date) - Rebooting"
-	sleep 3
-
-reboot
+echo "If configuration was successful, you can reboot to start everything."

@@ -38,15 +38,14 @@ At this point you may want to edit the `config.js` file and set your configurati
 
 Then edit `users.json` and add google accounts that should be allowed to authenticate.
 
-#### Keeping MongoDB alive
+**Keeping MongoDB alive** - there's a line in `scripts/start.sh` you can uncomment.
 
-There's a line in `scripts/start.sh`
-
+Next steps:
 ``` bash
-    cd mcon
-    npm install
-    cd scripts
+    cd mcon/scripts
     sh cfgserver.sh
+    sh ../
+    npm install
 ```
 
 The server will configure itself and reboot. When it comes back up, the web UI will be available at the domain you set.

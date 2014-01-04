@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # install deps
-	echo "$(date) - Installing mailapp dependencies"
-		apt-get install curl nginx python-software-properties g++ python make nodejs npm
+	echo "$(date) - Installing M-Con dependencies"
+		apt-get install curl nginx python-software-properties g++-4.6 g++ python make nodejs-dev nodejs npm
 		
 	echo "$(date) - Installing Forever"
 		npm install forever -g
@@ -13,7 +13,7 @@ echo "$(date) - Copying startup script"
 
 # CRON job
 echo "$(date) - Creating cron job"
-	cp /root/mcon/forever-cron.sh /etc/cron.d/forever-cron
+	cp /root/mcon/scripts/forever-cron.sh /etc/cron.d/forever-cron
 
 # finish message
 echo "$(date) - Server has finished configuring."

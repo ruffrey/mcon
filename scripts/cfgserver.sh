@@ -7,6 +7,7 @@
 
 		curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 		source ~/.profile
+		. ./.bashrc
 		nvm install 0.10.13
 		
 	echo "$(date) - Installing Forever"

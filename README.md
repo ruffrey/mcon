@@ -24,7 +24,7 @@ With support for:
 
 Start NodeJS processes with forever cli and manage them via a web interface.
 
-## Installation on a VPS server
+## Installation on Ubuntu VPS server
 
 This will install the app in `/root/`. It is recommended to keep configurations for app directories in `config.js` the same, which will all later apps in `/root/`. If you don't like it, write your own - sorry.
 

@@ -3,7 +3,7 @@
 # install deps
 	echo "$(date) - Installing M-Con dependencies"
 		apt-get update
-		apt-get install build-dep make libc-dev g++ build-essential curl nginx python
+		apt-get install build-dep make libc-dev gcc g++ build-essential curl nginx python
 
 		echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashrc
 		. ~/.bashrc

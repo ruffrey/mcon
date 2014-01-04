@@ -5,15 +5,9 @@
 		apt-get update
 		apt-get install build-dep make libc-dev gcc g++ build-essential curl nginx python
 
-		echo 'export PATH=$HOME/local/bin:$PATH' >> ~/.bashrc
-		. ~/.bashrc
-		mkdir ~/local
-		mkdir ~/node-latest-install
-		cd ~/node-latest-install
-		curl http://nodejs.org/dist/node-latest.tar.gz | tar xz --strip-components=1
-		./configure --prefix=~/local
-		make install
-		curl https://npmjs.org/install.sh | sh
+		curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+		source ~/.profile
+		nvm install 0.10.13
 		
 	echo "$(date) - Installing Forever"
 		npm install forever -g

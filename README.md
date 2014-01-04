@@ -36,8 +36,7 @@ This will install the app in `/root/`. It is recommended to keep configurations 
 
     # Installing node
 
-    curl https://raw.github.com/creationix/nvm/master/install.sh | sh
-	. ./.profile
+    wget -qO- https://raw.github.com/xtuple/nvm/master/install.sh | sh
 	nvm install 0.10
     git clone https://github.com/ruffrey/mcon.git
 ```

@@ -30,6 +30,7 @@ This will install the app in `/root/`. It is recommended to keep configurations 
 
 ``` bash
     # as root!!
+    apt-get install git
     git clone https://github.com/ruffrey/mcon.git
 ```
 

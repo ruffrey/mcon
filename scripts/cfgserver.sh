@@ -9,11 +9,11 @@
 
 # Putting startup script in place
 echo "$(date) - Copying startup script"
-	cp /root/forever-webui/scripts/forever-start.sh /root
+	cp /root/mcon/scripts/forever-start.sh /root
 
 # CRON job
 echo "$(date) - Creating cron job"
-	cp /root/forever-webui/forever-cron.sh /etc/cron.d/forever-cron
+	cp /root/mcon/forever-cron.sh /etc/cron.d/forever-cron
 
 # finish message
 echo "$(date) - Server has finished configuring."

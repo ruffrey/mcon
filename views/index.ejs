@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Forever Web UI v</title>
+  <title>Flogg v</title>
   <link rel="stylesheet" href="/dist/foreverui.min.css" /> 
 </head>
     <body>
         <div class="container">
             <div class="hero-unit">
-                <h1>Forever Web UI <small>beta</small></h1>
-                <p>Simple web UI for efficient nodejs administration</p>
+                <h1>Flogg UI</h1>
+                <p>Node.js Forever Administration</p>
                 <div class="menubar left">Process count 
                     <span id="process-count">0</span>
                 </div>
                 <div class="menubar center">
-                    <span href="#" id="addProcess-modal" class="btn">Process +1</span>
+                    <span href="#" id="addProcess-modal" class="btn">
+                        Add Process from Git Repo</span>
                 </div>
                 <div class="menubar right">
                     <span href="#" class="btn refresh">Refresh list</span>
@@ -21,11 +22,13 @@
                 <div class="menubar signout">
                     <a href="/logout" id="signout" class="btn">Sign Out</a>
                 </div>
+                <button id="getSSH" class="btn">Get SSH pub key</button>
+                <button id="makeSSH" class="btn btn-primary">Make SSH pub key</button>
+                <div id="sshspot"></div>
             </div>
             <div id="process-list"></div>
             <footer>
-                <p>Forever Web UI v<span id="app-version"></span> - by
-                    <a href="http://twitter.com/FGRibreau">@FGRibreau</a>
+                <p>Forever Web UI v<span id="app-version"></span>
                 </p>
             </footer>
         </div>
@@ -53,10 +56,18 @@
                 <div class="modal-header"><h3>Add New Process</h3></div>
                 <div class="modal-body">
                     <form>
-                        <label class="control-label" id="process-args">Process Args</label>
-                        <div class="divDialogElements">
-                            <input id="process-args-input" name="process-args-input" type="text"/>
-                        </div>
+
+                        <p>Git repository</p>
+                        <input id="process-args-repo" name="process-args-repo" type="text" />
+                        <br />
+
+                        <p>Process Args, relative to Git repository path (example: "app.js")</p>
+                        <input id="process-args-input" name="process-args-input" type="text" />
+                        <br />
+                        
+                        <p>Process Name</p>
+                        <input id="process-args-name" name="process-args-name" type="text" />
+                        
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -83,6 +94,27 @@
             $(function () {
                 App.ForeverWebUIApp = new App.AppView( <%- JSON.stringify(process) %> );
                 App.addProcessFlow  = new App.AddProcess();
+
+                $('#getSSH').click(function(){
+                    var btn = $(this);
+                    $.get('/ssh', function(data) {
+                        $('#sshspot').prepend(data.details);
+                        btn.remove();
+                    },'json');
+                });
+
+                $('#makeSSH').click(function(){
+
+                    var btn = $(this);
+                    if(confirm('Really?'))
+                    {
+                        $.post('/ssh', function(data) {
+                            $('#sshspot').prepend(data);
+                            btn.remove();
+                        });
+                    }
+                    
+                });
             });
         </script>
     </body>

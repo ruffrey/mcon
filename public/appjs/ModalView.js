@@ -37,10 +37,18 @@ App.ModalView = Backbone.View.extend({
 
   addProcess: function(){
     if ($('#process-args-input').val()) {
+      var reqData = {
+        'args': encodeURIComponent($('#process-args-input').val()),
+        'path': $('#process-args-input').val(),
+        'name': $('#process-args-name').val(),
+        'repo': $('#process-args-repo').val()
+      };
+      console.log(reqData);
+
       var request = $.ajax({
           url: "/addProcess",
           type: "post",
-          data: {'args': encodeURIComponent($('#process-args-input').val())}
+          data: reqData
       });
       
       request.success(function (response, textStatus, jqXHR){

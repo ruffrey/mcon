@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd /root
+
 # install deps
 	echo "$(date) - Installing M-Con dependencies"
 		apt-get update
@@ -7,7 +9,7 @@
 
 		curl https://raw.github.com/creationix/nvm/master/install.sh | sh
 		source ~/.profile
-		. ./.bashrc
+		nvm ls-remote
 		nvm install 0.10.13
 		
 	echo "$(date) - Installing Forever"

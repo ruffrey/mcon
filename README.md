@@ -2,15 +2,19 @@
 
 A web console for managing your Node.js apps on a VPS server.
 
-Minimal work is needed to get up and running. 
+## Goals
+
+It should take very minimal work is needed to get Node.js apps up and running.
 
 The goal is to create a Node cloud hosting experience similar to cloud services like AppFog or Nodejitsu, but with your cheap VPS box.
 
 Adding a new app should be **isanely easy**. Like this:
+
 1. Logging into a web UI with SSO.
 1. Using a GUI to create a new Forever Node process from a git repository.
 
 With support for:
+
 - Generating an SSH key on the server.
 - Creating a cron task to reboot all Forever processes if the server reboots.
 - Running multiple Node.js apps behind Nginx.

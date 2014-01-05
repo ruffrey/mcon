@@ -25,7 +25,7 @@
                     <a href="/logout" id="signout" class="btn">Sign Out</a>
                 </div>
                 <button id="getSSH" class="btn">Get SSH pub key</button>
-                <button id="makeSSH" class="btn btn-primary">Make SSH pub key</button>
+                <!-- <button id="makeSSH" class="btn btn-primary">Make SSH pub key</button> -->
                 <div id="sshspot"></div>
             </div>
             <div id="process-list"></div>
@@ -128,18 +128,18 @@
                     },'json');
                 });
 
-                $('#makeSSH').click(function(){
+                // $('#makeSSH').click(function(){
 
-                    var btn = $(this);
-                    if(confirm('Really?'))
-                    {
-                        $.post('/ssh', function(data) {
-                            $('#sshspot').prepend(data);
-                            btn.remove();
-                        });
-                    }
+                //     var btn = $(this);
+                //     if(confirm('Really?'))
+                //     {
+                //         $.post('/ssh', function(data) {
+                //             $('#sshspot').prepend(data);
+                //             btn.remove();
+                //         });
+                //     }
                     
-                });
+                // });
             });
         </script>
     </body>

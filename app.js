@@ -1,9 +1,9 @@
-(function() {
+// (function() {
 
 
 
 var HEADER, UI, ansiparse, app, async, ejs,
-express, forever, foreverUI, fs, _, pkg, spawn,
+express, forever, foreverUI, fs, _, pkg,
 passport, LocalStrategy, GoogleStrategy, utils, log, users,
 config, path, BindAuthRoutes, url;
 
@@ -19,7 +19,6 @@ ejs = require('ejs');
 pkg = require('./package.json');
 utils = require("./utils/utils");
 log = require("./utils/logger");
-spawn = require('child_process').spawn;
 passport = require('passport');
 LocalStrategy = require('passport-local').Strategy;
 GoogleStrategy = require('passport-google').Strategy;
@@ -45,6 +44,8 @@ function NginxConfPath(dmn) {
 function ConfigureNginx(domain, subdomain, port, callback) {
 	
 	var confFilePath = NginxConfPath(domain);
+	console.log('Nginx conf path', confFilePath);
+
 	var nginxTemplate = fs.readFileSync(__dirname+"/scripts/nginx-template.sh", {encoding: 'utf8'});
 
 	nginxTemplate = nginxTemplate
@@ -56,16 +57,22 @@ function ConfigureNginx(domain, subdomain, port, callback) {
 	// create the nginx config file for this primary domain if it does not exist
 	if(!fs.existsSync(confFilePath))
 	{
+		console.log('Nginx main domain file does not exist, creating.');
 		fs.writeFileSync(confFilePath, '#!/bin/sh\n\n');
+		console.log('Created Nginx main domain file', confFilePath);
 	}
 	
 	// Append the emplate
+	console.log('Nginx: appending to conf file');
 	fs.appendFileSync(confFilePath, nginxTemplate);
+
+	console.log('Nginx: successfully appended to conf file.');
 
 	// restart nginx
 	var exec = require('child_process').exec,
   		child;
 
+  	console.log('Restarting Nginx');
 	child = exec('service nginx restart', function (err, stdout, stderr) {
 
 	  	if (err) console.log('exec error: ' + err);   
@@ -330,27 +337,33 @@ app.post('/addProcess', function(req, res) {
   		child;
 
   	// clone the repository then install npm modules
+  	console.log('Cloning repository', req.body.repo);
 	child = exec('git clone ' + req.body.repo + ' ' + newAppPath,
 		function (error, stdout, stderr) {
 
 		  	if (error !== null) 
 		  	{   
-		  		console.log('exec error: ' + error);   
+		  		console.log('Git clone error:', error, stderr);   
 		  		return res.json({
 		  			status: 'error',
 					details: error
 		  		}, HEADER, 500); 
 			} 
-			 
+
+			console.log('Git:', stdout);
+			
+			console.log('Installing packages with npm', newAppPath);
 			child = exec('cd ' + newAppPath + ' && npm install', function(error, stdout, stderr) {
 				if (error !== null) 
 			  	{   
-			  		console.log('exec error: ' + error);   
+			  		console.log('npm install error', error, stderr);   
 			  		return res.json({
 			  			status: 'error',
 						details: error
 			  		}, HEADER, 500); 
 				} 
+
+				console.log('npm:', stdout);
 				
 				nextSteps(); 
 
@@ -362,13 +375,18 @@ app.post('/addProcess', function(req, res) {
 	function nextSteps() {
 
 		// first start the process, then write the sh startup file.
-		return UI.start(
-			encodeURIComponent(
+
+		var foreverProcessArgs = encodeURIComponent(
 				req.body.vars + ' ' + config.appdir +' ' + req.body.name + '/' + req.body.args
-			), 
+			);
+		console.log('Starting forever process\n', foreverProcessArgs);
+
+		return UI.start(
+			foreverProcessArgs, 
 			function(err, results) {
 			  if (err) 
 			  {
+			  	console.log('Starting forever process failed!', err);
 				return res.send(JSON.stringify({
 				  status: 'error',
 				  details: err
@@ -378,17 +396,26 @@ app.post('/addProcess', function(req, res) {
 
 			  // write the new process out to a shell script so it'll get loaded whenever
 			  // the server reboots
-			  fs.writeFile(
-				config.appdir + "processes/" + req.body.name + ".sh", 
 
-				"#!/bin/sh\n"
-					+ req.body.vars + " "
-					+ "/usr/local/bin/node /usr/local/bin/forever start " 
-					+ decodeURIComponent(req.body.args), 
+			  var foreverProcessRebootScriptPath = config.appdir 
+			  		+ "processes/" + req.body.name + ".sh",
+
+			  		foreverRebootScript = "#!/bin/sh\n"
+						+ req.body.vars + " "
+						+ "/usr/local/bin/node /usr/local/bin/forever start " 
+						+ decodeURIComponent(req.body.args);
+
+			  console.log('Writing the forever reboot script to', foreverProcessRebootScriptPath); 
+			  console.log(foreverRebootScript);
+
+			  fs.writeFile(
+				foreverProcessRebootScriptPath, 
+				foreverRebootScript, 
 
 				function(err) {
 				  if (err) 
 				  {
+				  	console.log('Writing forever reboot script failed.', err);
 					return res.send(JSON.stringify({
 					  status: 'error',
 					  details: err
@@ -431,7 +458,7 @@ app.post('/addProcess', function(req, res) {
 // });
 
 app.get('/ssh', function(req, res) {
-	fs.readFile('/Users/jpx/.ssh/id_rsa.pub', 'utf8', function(err, fileText) {
+	fs.readFile(__dirname+'/../.ssh/id_rsa.pub', 'utf8', function(err, fileText) {
 		if(err) 
 	  	{
 			return res.send(JSON.stringify({
@@ -448,25 +475,25 @@ app.get('/ssh', function(req, res) {
 });
 
 
-app.post('/ssh', function(req, res) {
-	var exec = require('child_process').exec,
-	child;
+// app.post('/ssh', function(req, res) {
+// 	var exec = require('child_process').exec,
+// 	child;
 
-	child = exec(__dirname + "/scripts/cfgssh.sh",
-	  function (error, stdout, stderr) {
+// 	child = exec(__dirname + "/scripts/cfgssh.sh",
+// 	  function (error, stdout, stderr) {
 
-		if (error !== null) {
-		  console.log('exec error: ' + error);
-		  return res.send(JSON.stringify({
-			  status: 'error',
-			  details: error
-			}), HEADER, 500);
-		}
+// 		if (error !== null) {
+// 		  console.log('exec error: ' + error);
+// 		  return res.send(JSON.stringify({
+// 			  status: 'error',
+// 			  details: error
+// 			}), HEADER, 500);
+// 		}
 		
-		res.send(stdout);
+// 		res.send(stdout);
 
-	});
-});
+// 	});
+// });
 
 
 
@@ -478,4 +505,4 @@ this.log.info(config.appname, "listening on port", config.port);
 
 
 
-}).call(this);
+// }).call(this);

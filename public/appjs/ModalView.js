@@ -28,7 +28,7 @@ App.ModalView = Backbone.View.extend({
 
   show: function() {
     $(document.body).append(this.render().el);
-    $('#process-args-input').focus();
+    $('#process-args-repo').focus();
   },
 
   close: function() {

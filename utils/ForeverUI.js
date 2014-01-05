@@ -1,4 +1,5 @@
-var forever = require('forever');
+var forever = require('forever'),
+	spawn = require('child_process').spawn;
 
 exports = module.exports = (function() {
 

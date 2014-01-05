@@ -20,11 +20,12 @@ cd /root/mcon && npm install
 mkdir /root/processes
 
 echo "$(date) - Installing Nginx"
-	apt-get install nginx
+	apt-get -y install nginx
 	
 echo "$(date) - Installing Forever"
 	npm install forever -g
 	npm install grunt-cli -g
+	cd /root/mcon && grunt
 
 # Putting startup script in place
 echo "$(date) - Copying startup script"
@@ -37,6 +38,7 @@ echo "$(date) - Creating cron job"
 echo "$(date) - Generating ssh key"
 cd /root/mcon/scripts
 sh cfgssh.sh
+cd /root
 
 # finish message
 echo "$(date) - Server has finished configuring."

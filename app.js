@@ -43,7 +43,6 @@ function NginxConfPath(dmn) {
 }
 
 function ConfigureNginx(domain, subdomain, port, callback) {
-	// create the nginx config file for this primary domain if it does not exist
 	
 	var confFilePath = NginxConfPath(domain);
 	var nginxTemplate = fs.readFileSync(__dirname+"/scripts/nginx-template.sh", {encoding: 'utf8'});
@@ -54,11 +53,13 @@ function ConfigureNginx(domain, subdomain, port, callback) {
 					)
 					.replace('{{PORT}}', port);
 
+	// create the nginx config file for this primary domain if it does not exist
 	if(!fs.existsSync(confFilePath))
 	{
 		fs.writeFileSync(confFilePath, '#!/bin/sh\n\n');
 	}
 	
+	// Append the emplate
 	fs.appendFileSync(confFilePath, nginxTemplate);
 
 	// restart nginx

@@ -4,13 +4,26 @@ cd /root/mcon && npm install
 cd /root
 mkdir /root/processes
 
-# install deps
-	echo "$(date) - Installing M-Con dependencies"
-		#apt-get update
-		#apt-get install build-dep make libc-dev gcc g++ build-essential curl nginx python
-		
-	echo "$(date) - Installing Forever"
-		npm install forever -g
+
+echo "$(date) - Installing dependencies"
+	
+
+echo "$(date) - Installing Node using NVM"
+	nvm install 0.10
+
+echo "$(date) - Linking node"
+	/usr/local/nvm/nvm_bin.sh use 0.10
+
+    sudo ln -s /usr/local/nvm/nvm_bin.sh /usr/bin/nvm
+    sudo ln -s /usr/local/bin/node /usr/bin/node
+	sudo ln -s /usr/local/bin/npm /usr/bin/npm
+
+echo "$(date) - Installing Nginx"
+	apt-get install nginx
+	
+echo "$(date) - Installing Forever"
+	npm install forever -g
+	npm install grunt-cli -g
 
 # Putting startup script in place
 echo "$(date) - Copying startup script"

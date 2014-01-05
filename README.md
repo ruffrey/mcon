@@ -29,17 +29,14 @@ Start NodeJS processes with forever cli and manage them via a web interface.
 This will install the app in `/root/`. It is recommended to keep configurations for app directories in `config.js` the same, which will all later apps in `/root/`. If you don't like it, write your own - sorry.
 
 ``` bash
-    
     # Make sure you are logged in as root!!
     apt-get update
-    apt-get install git curl
-
-    # Installing node
-
+    apt-get install git curl nano wget
     wget -qO- https://raw.github.com/xtuple/nvm/master/install.sh | sh
-	nvm install 0.10
     git clone https://github.com/ruffrey/mcon.git
+
 ```
+
 
 At this point you may want to edit the `config.js` file and set your configurations.
 

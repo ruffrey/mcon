@@ -9,17 +9,19 @@
             <div class="hero-unit">
                 <h1><%= config.appname %></h1>
                 <p><%= config.tagline %></p>
-                <div class="menubar left">Process count 
+                <div class="menubar left">
+                    Process count 
                     <span id="process-count">0</span>
                 </div>
                 <div class="menubar center">
                     <span href="#" id="addProcess-modal" class="btn">
-                        Add Process from Git Repo</span>
+                        + New Process</span>
                 </div>
                 <div class="menubar right">
                     <span href="#" class="btn refresh">Refresh list</span>
                 </div>
                 <div class="menubar signout">
+                    <a href="/reboot-server" id="reboot" class="btn">Restart Server</a>
                     <a href="/logout" id="signout" class="btn">Sign Out</a>
                 </div>
                 <button id="getSSH" class="btn">Get SSH pub key</button>
@@ -122,8 +124,7 @@
                 $('#getSSH').click(function(){
                     var btn = $(this);
                     $.get('/ssh', function(data) {
-                        $('#sshspot').prepend(data.details);
-                        btn.remove();
+                        $('#sshspot').empty().prepend('<textarea>'+data.details+'</textarea>');
                     },'json');
                 });
 

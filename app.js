@@ -379,7 +379,7 @@ app.post('/addProcess', function(req, res) {
 		var foreverProcessArgs = (req.body.vars ? req.body.vars + ' ' : "")
 							+ config.appdir + req.body.name 
 							+ '/' + req.body.args;
-		
+
 		console.log('Starting forever process\n', foreverProcessArgs);
 
 		return UI.start(
@@ -453,6 +453,27 @@ app.post('/addProcess', function(req, res) {
 
 });
 
+app.get('/reboot-server', function(req, res) {
+	var exec = require('child_process').exec,
+  		child;
+
+  	console.log('Executing request to reboot the server.');
+	child = exec('reboot', function (err, stdout, stderr) {
+
+	  	if (err) 
+	  	{
+	  		console.log('Error on reboot exec:', err, stderr);
+	  		return res.json({
+		  		status: 'error',
+		  		details: err
+			}, HEADER, 500);
+	  	} 
+		
+		res.redirect('/');
+
+	});
+
+});
 
 app.get('/ssh', function(req, res) {
 	fs.readFile(__dirname+'/../.ssh/id_rsa.pub', 'utf8', function(err, fileText) {

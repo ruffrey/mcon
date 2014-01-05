@@ -376,9 +376,10 @@ app.post('/addProcess', function(req, res) {
 
 		// first start the process, then write the sh startup file.
 
-		var foreverProcessArgs = req.body.vars + ' ' 
+		var foreverProcessArgs = (req.body.vars ? req.body.vars + ' ' : "")
 							+ config.appdir + req.body.name 
 							+ '/' + req.body.args;
+		
 		console.log('Starting forever process\n', foreverProcessArgs);
 
 		return UI.start(

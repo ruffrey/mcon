@@ -32,14 +32,19 @@ This will install the app in `/root/`. It is recommended to keep configurations 
 
     # Make sure you are logged in as root!!
     cd /root
-    apt-get update
+    apt-get -y update
     apt-get -y install git curl nano wget
     git clone https://github.com/ruffrey/mcon.git
 
 ```
 
 
-At this point you may want to edit the `config.js` file and set your configurations, including where the web UI will listen.
+At this point you may want to edit the `config.js` file and set your configurations, especially the domain.
+
+``` bash
+
+    nano mcon/config.js
+```
 
 Then edit `users.json` and add google accounts that should be allowed to authenticate.
 

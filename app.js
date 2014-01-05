@@ -377,7 +377,7 @@ app.post('/addProcess', function(req, res) {
 		// first start the process, then write the sh startup file.
 
 		var foreverProcessArgs = encodeURIComponent(
-				req.body.vars + ' ' + config.appdir +' ' + req.body.name + '/' + req.body.args
+				req.body.vars + ' ' + config.appdir + req.body.name + '/' + req.body.args
 			);
 		console.log('Starting forever process\n', foreverProcessArgs);
 
@@ -403,10 +403,10 @@ app.post('/addProcess', function(req, res) {
 			  		foreverRebootScript = "#!/bin/sh\n"
 						+ req.body.vars + " "
 						+ "/usr/local/bin/node /usr/local/bin/forever start " 
-						+ decodeURIComponent(req.body.args);
+						+ foreverProcessArgs;
 
 			  console.log('Writing the forever reboot script to', foreverProcessRebootScriptPath); 
-			  console.log(foreverRebootScript);
+			  console.log('\n\n', foreverRebootScript, '\n\n');
 
 			  fs.writeFile(
 				foreverProcessRebootScriptPath, 
@@ -451,12 +451,6 @@ app.post('/addProcess', function(req, res) {
 });
 
 
-// app.post('/updateProcess', function(req, res) {
-
-
-
-// });
-
 app.get('/ssh', function(req, res) {
 	fs.readFile(__dirname+'/../.ssh/id_rsa.pub', 'utf8', function(err, fileText) {
 		if(err) 
@@ -473,28 +467,6 @@ app.get('/ssh', function(req, res) {
 	  	}), HEADER, 200);
 	});
 });
-
-
-// app.post('/ssh', function(req, res) {
-// 	var exec = require('child_process').exec,
-// 	child;
-
-// 	child = exec(__dirname + "/scripts/cfgssh.sh",
-// 	  function (error, stdout, stderr) {
-
-// 		if (error !== null) {
-// 		  console.log('exec error: ' + error);
-// 		  return res.send(JSON.stringify({
-// 			  status: 'error',
-// 			  details: error
-// 			}), HEADER, 500);
-// 		}
-		
-// 		res.send(stdout);
-
-// 	});
-// });
-
 
 
 app.listen(config.port);

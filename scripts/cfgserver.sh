@@ -2,17 +2,9 @@
 
 cd /root
 
-wget -qO- https://raw.github.com/xtuple/nvm/master/install.sh | sh
-
-
-cd /root/mcon/scripts
-sh cfgssh.sh
-
-
-echo "$(date) - Installing dependencies"
-	
 
 echo "$(date) - Installing Node using NVM"
+	wget -qO- https://raw.github.com/xtuple/nvm/master/install.sh | sh
 	nvm install 0.10
 
 echo "$(date) - Linking node"
@@ -41,6 +33,10 @@ echo "$(date) - Copying startup script"
 # CRON job
 echo "$(date) - Creating cron job"
 	cp /root/mcon/scripts/forever-cron.sh /etc/cron.d/forever-cron
+
+echo "$(date) - Generating ssh key"
+cd /root/mcon/scripts
+sh cfgssh.sh
 
 # finish message
 echo "$(date) - Server has finished configuring."

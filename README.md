@@ -57,7 +57,6 @@ Then edit `users.json` and add google accounts that should be allowed to authent
 
     cd /root/mcon/scripts
     sh cfgserver.sh
-
 ```
 
 The server will configure itself. 
@@ -65,6 +64,8 @@ The server will configure itself.
 IF it is successful, reboot. 
 
 When it comes back up, the web UI will be available at the domain you set.
+
+From here you can get the SSH key and add it to your git repository system to allow access. Then start adding Node processes.
 
 
 ## Troubleshooting
@@ -75,6 +76,21 @@ Check `/root/forever-cron.log` or run `forever list` then `forever logs <process
 ## Security and Authentication
 
 Auth is provided by Passport.js, the Google Strategy only. Users are listed in `users.json`.
+
+## Updating an app
+
+This will be added in the future, I hope.
+
+Right now you'll have to log into the server, then do the following manually:
+
+``` bash
+    
+    # while logged in as root
+    rm -r <source code folder>
+    git clone <source code git repository>
+    forever restart <process index>
+```
+
 
 ## More Info
 

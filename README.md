@@ -52,7 +52,11 @@ Then edit `users.json` and add google accounts that should be allowed to authent
 
 ```
 
-The server will configure itself. IF it is successful, reboot. When it comes back up, the web UI will be available at the domain you set.
+The server will configure itself. 
+
+IF it is successful, reboot. 
+
+When it comes back up, the web UI will be available at the domain you set.
 
 
 ## Troubleshooting

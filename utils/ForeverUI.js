@@ -1,5 +1,15 @@
 var forever = require('forever'),
-	spawn = require('child_process').spawn;
+	spawn = require('child_process').spawn
+	async = require('async'),
+	fs = require('fs'),
+	path = require('path'),
+	url = require('url'),
+	_ = require('underscore'),
+	ansiparse = require('ansiparse'),
+	ejs = require('ejs'),
+	pkg = require('./package.json'),
+	utils = require("./utils/utils"),
+	log = require("./utils/logger");
 
 exports = module.exports = (function() {
 

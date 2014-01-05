@@ -1,8 +1,19 @@
 #!/bin/sh
 
-cd /root/mcon && npm install
 cd /root
+
+wget -qO- https://raw.github.com/xtuple/nvm/master/install.sh | sh
+
+
+cd /root/mcon/scripts
+sh cfgssh.sh
+cd /root/mcon
+npm install
+
+
+cd /root/mcon && npm install
 mkdir /root/processes
+
 
 
 echo "$(date) - Installing dependencies"

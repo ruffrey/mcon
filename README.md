@@ -29,30 +29,30 @@ Start NodeJS processes with forever cli and manage them via a web interface.
 This will install the app in `/root/`. It is recommended to keep configurations for app directories in `config.js` the same, which will all later apps in `/root/`. If you don't like it, write your own - sorry.
 
 ``` bash
+
     # Make sure you are logged in as root!!
+    cd /root
     apt-get update
     apt-get install git curl nano wget
-    wget -qO- https://raw.github.com/xtuple/nvm/master/install.sh | sh
     git clone https://github.com/ruffrey/mcon.git
 
 ```
 
 
-At this point you may want to edit the `config.js` file and set your configurations.
+At this point you may want to edit the `config.js` file and set your configurations, including where the web UI will listen.
 
 Then edit `users.json` and add google accounts that should be allowed to authenticate.
 
 **Keeping MongoDB alive** - there's a line in `scripts/start.sh` you can uncomment.
 
-Next steps:
 ``` bash
-    cd mcon/scripts
+
+    cd /root/mcon/scripts
     sh cfgserver.sh
-    sh ../
-    npm install
+
 ```
 
-The server will configure itself and reboot. When it comes back up, the web UI will be available at the domain you set.
+The server will configure itself. IF it is successful, reboot. When it comes back up, the web UI will be available at the domain you set.
 
 
 ## Troubleshooting

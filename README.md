@@ -53,7 +53,7 @@ Then edit `users.json` and add google accounts that should be allowed to authent
 
 **Keeping MongoDB alive** - there's a line in `scripts/start.sh` you can uncomment.
 
-Once configured, continue:
+Once `config.js` and users are added, continue:
 
 ``` bash
 
@@ -61,7 +61,7 @@ Once configured, continue:
     sh cfgserver.sh
 ```
 
-The server will configure itself. 
+This part might take a little while while the server configures itself. 
 
 IF it is successful, reboot. 
 

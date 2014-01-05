@@ -376,13 +376,13 @@ app.post('/addProcess', function(req, res) {
 
 		// first start the process, then write the sh startup file.
 
-		var foreverProcessArgs = encodeURIComponent(
-				req.body.vars + ' ' + config.appdir + req.body.name + '/' + req.body.args
-			);
+		var foreverProcessArgs = req.body.vars + ' ' 
+							+ config.appdir + req.body.name 
+							+ '/' + req.body.args;
 		console.log('Starting forever process\n', foreverProcessArgs);
 
 		return UI.start(
-			foreverProcessArgs, 
+			encodeURIComponent(foreverProcessArgs), 
 			function(err, results) {
 			  if (err) 
 			  {
@@ -393,6 +393,8 @@ app.post('/addProcess', function(req, res) {
 				}), HEADER, 500);
 			  }
 
+			  console.log('Forever process started:');
+			  console.log(results);
 
 			  // write the new process out to a shell script so it'll get loaded whenever
 			  // the server reboots

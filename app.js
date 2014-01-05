@@ -472,7 +472,7 @@ app.get('/ssh', function(req, res) {
 app.listen(config.port);
 
 this.log.info(config.appname, "boot complete.");
-this.log.info(config.appname, "listening on port", config.port);
+this.log.info(process.env.NODE_ENV || 'dev', config.appname, "listening on port", config.port);
 
 
 

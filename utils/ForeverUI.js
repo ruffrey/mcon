@@ -7,8 +7,8 @@ var forever = require('forever'),
 	_ = require('underscore'),
 	ansiparse = require('ansiparse'),
 	ejs = require('ejs'),
-	utils = require("./utils/utils"),
-	log = require("./utils/logger");
+	utils = require("./utils"),
+	log = require("./logger");
 
 exports = module.exports = (function() {
 

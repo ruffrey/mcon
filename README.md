@@ -53,6 +53,8 @@ Then edit `users.json` and add google accounts that should be allowed to authent
 
 **Keeping MongoDB alive** - there's a line in `scripts/start.sh` you can uncomment.
 
+Once configured, continue:
+
 ``` bash
 
     cd /root/mcon/scripts

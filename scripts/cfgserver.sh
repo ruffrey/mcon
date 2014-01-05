@@ -7,13 +7,6 @@ wget -qO- https://raw.github.com/xtuple/nvm/master/install.sh | sh
 
 cd /root/mcon/scripts
 sh cfgssh.sh
-cd /root/mcon
-npm install
-
-
-cd /root/mcon && npm install
-mkdir /root/processes
-
 
 
 echo "$(date) - Installing dependencies"
@@ -28,6 +21,11 @@ echo "$(date) - Linking node"
     sudo ln -s /usr/local/nvm/nvm_bin.sh /usr/bin/nvm
     sudo ln -s /usr/local/bin/node /usr/bin/node
 	sudo ln -s /usr/local/bin/npm /usr/bin/npm
+
+
+echo "$(date) - Installing NPM packages"
+cd /root/mcon && npm install
+mkdir /root/processes
 
 echo "$(date) - Installing Nginx"
 	apt-get install nginx

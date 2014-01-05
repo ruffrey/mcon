@@ -7,7 +7,6 @@ var forever = require('forever'),
 	_ = require('underscore'),
 	ansiparse = require('ansiparse'),
 	ejs = require('ejs'),
-	pkg = require('./package.json'),
 	utils = require("./utils/utils"),
 	log = require("./utils/logger");
 

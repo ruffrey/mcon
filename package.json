@@ -1,16 +1,12 @@
 {
-  "name": "forever-webui",
-  "description": "Forever Web UI",
-  "version": "0.1.6",
-  "author": "Francois-Guillaume Ribreau (http://fgribreau.com)",
+  "name": "mcon",
+  "description": "M-Con Mission Control for Node Apps on VPS servers",
+  "version": "0.1.1",
+  "author": "Jeff Parrish (http://sylog.net)",
   "contributors": [
     {
-      "name": "Francois-Guillaume Ribreau",
-      "email": "npm@fgribreau.com"
-    },
-    {
-      "name": "Rajiv Kilaparti",
-      "email": "rajivk085@gmail.com"
+      "name": "Jeff Parrish",
+      "email": "jeffhparrish@gmail.com"
     }
   ],
   "dependencies": {
@@ -28,17 +24,17 @@
   },
   "keywords": [
     "forever",
-    "web ui"
+    "web ui",
+    "vps",
+    "sysadmin"
   ],
-  "repository": "git://github.com/FGRibreau/forever-webui.git",
-  "main": "index",
+  "repository": "https://github.com/ruffrey/mcon.git",
+  "main": "app.js",
   "engines": {
-    "node": ">= 0.8.x"
+    "node": "0.10.x"
   },
   "scripts": {
-    "clean": "make clean",
-    "test": "make test",
-    "start": "make start"
+    "start": "node app"
   },
   "devDependencies": {
     "should": "1.2.2",

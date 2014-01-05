@@ -27,10 +27,6 @@ It should take minimal work to get Node.js apps up and running on a cheap VPS.
 - Running multiple Node.js apps behind Nginx.
 
 
-## Usage
-
-Start NodeJS processes with forever cli and manage them via a web interface.
-
 ## Installation on an Ubuntu 12.04 VPS server
 
 Use these instructions to install **M-Con** in `/root/` on a freshly installed VPS server running Ubuntu 12.04.

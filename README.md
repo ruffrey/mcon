@@ -1,21 +1,28 @@
-# M-Con Mission Control console for Node.js Apps running with Forever.js
+This is alpha software! Feedback welcome.
 
-A web console for managing your Node.js apps on a VPS server.
+# M-Con Mission Control
+#### console for Node.js Apps
+
+A web based user interface for managing multiple Node.js apps with Forever.js on a VPS server.
+
+## Use Case
+
+It should take minimal work to get Node.js apps up and running on a cheap VPS.
 
 ## Goals
 
-It should take very minimal work is needed to get Node.js apps up and running.
+**Create a Node hosting experience** similar to services like AppFog or Nodejitsu, but with your so-cheap-it's-practically-free VPS slice.
 
-The goal is to create a Node cloud hosting experience similar to cloud services like AppFog or Nodejitsu, but with your cheap VPS box.
+**Apps should stay up**, after crashes or a reboot.
 
-Adding a new app should be **isanely easy**. Like this:
+**Easily add a new app**, like this:
 
 1. Logging into a web UI with SSO.
-1. Using a GUI to create a new Forever Node process from a git repository.
+1. Use a GUI to create a new node process from a git repository.
 
-With support for:
-
-- Generating an SSH key on the server.
+**Get all this preconfigured**
+- Installing Node.js and NPM.
+- Generating an SSH key.
 - Creating a cron task to reboot all Forever processes if the server reboots.
 - Running multiple Node.js apps behind Nginx.
 
@@ -24,9 +31,11 @@ With support for:
 
 Start NodeJS processes with forever cli and manage them via a web interface.
 
-## Installation on Ubuntu 12.04 VPS server
+## Installation on an Ubuntu 12.04 VPS server
 
-This will install the app in `/root/`. It is recommended to keep configurations for app directories in `config.js` the same, which will all later apps in `/root/`. If you don't like it, write your own - sorry.
+Use these instructions to install **M-Con** in `/root/` on a freshly installed VPS server running Ubuntu 12.04.
+
+It is recommended to keep configurations for app directories in `config.js` the same, which will all later apps in `/root/`. If you don't like it, please fork and write your app - sorry.
 
 ``` bash
 
@@ -35,11 +44,9 @@ This will install the app in `/root/`. It is recommended to keep configurations 
     apt-get -y update
     apt-get -y install git curl nano wget
     git clone https://github.com/ruffrey/mcon.git
-
 ```
 
-
-At this point you may want to edit the `config.js` file and set your configurations, especially the domain.
+Edit the `config.js` file and set your configurations, especially the domain.
 
 ``` bash
 
@@ -66,13 +73,19 @@ When it comes back up, the web UI will be available at the domain you set.
 
 ## Troubleshooting
 
-Check `cron.log` which will be created in the `config.js` `{appdir: "/somewhere/" }` that you set.
+Check `/root/forever-cron.log` or run `forever list` then `forever logs <process index>` where process index is the one you want to see logs for. Usually it will be 0. `forever logs 0`
 
 
 ## Security and Authentication
 
 Auth is provided by Passport.js, the Google Strategy only. Users are listed in `users.json`.
 
+## More Info
+
+- Built with Express
+- M-Con installs and runs Node 0.10.x. Modify the nvm commands in the following files to change the Node version:
+    - `scripts/cfgserver.sh`
+    - `scripts/forever-start.sh`
 
 ## Credits
 
